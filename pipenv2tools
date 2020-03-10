@@ -55,6 +55,14 @@ def transform_source_file(
 
     deps = set()
     lines = []
+
+    sources = env_source["source"]
+    for n, s in enumerate(sources):
+        flag = "--extra-index-url" if n > 0 else "--index-url"
+        assert s["verify_ssl"]
+        lines.append(f"{flag} {s['url']}\n")
+    lines.append("\n")
+
     package_groups = [env_source["packages"]]
     if dev:
         package_groups.append(env_source["dev-packages"])
