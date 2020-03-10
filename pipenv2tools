@@ -28,6 +28,7 @@ import argparse
 import json
 import pathlib
 import os
+import re
 import subprocess
 import sys
 import typing
@@ -63,6 +64,9 @@ def transform_source_file(
             lines.append("\n# dev-packages\n")
 
         for pkg, constraint in pg.items():
+            _search = re.search("'version':\s*'([^']+)'", str(constraint))
+            if _search:
+                constraint = _search.group(1)
             if constraint == "*":
                 constraint = ""
             lines.append(f"{pkg}{constraint}\n")
